@@ -23,11 +23,11 @@ if (cluster.isMaster) {
 
     // Add a basic route – index page
     app.get('/', function (req, res) {
-        res.send('Hello World!');
+        res.send('Hello from Worker ' + cluster.worker.id);
     });
 
     // Bind to a port
     app.listen(3000);
-    console.log('Application running!');
+    console.log('Worker ' + cluster.worker.id + ' running!');
 
 }
