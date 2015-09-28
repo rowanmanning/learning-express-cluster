@@ -1,3 +1,4 @@
+
 // Include the cluster module
 var cluster = require('cluster');
 
@@ -16,7 +17,7 @@ if (cluster.isMaster) {
     cluster.on('exit', function (worker) {
 
         // Replace the dead worker, we're not sentimental
-        console.log('Worker ' + worker.id + ' died :(');
+        console.log('Worker %d died :(', worker.id);
         cluster.fork();
 
     });
@@ -31,12 +32,13 @@ if (cluster.isMaster) {
     var app = express();
 
     // Add a basic route – index page
-    app.get('/', function (req, res) {
-        res.send('Hello from Worker ' + cluster.worker.id);
+    app.get('/', function (request, response) {
+        console.log('Request to worker %d', cluster.worker.id);
+        response.send('Hello from Worker ' + cluster.worker.id);
     });
 
     // Bind to a port
     app.listen(3000);
-    console.log('Worker ' + cluster.worker.id + ' running!');
+    console.log('Worker %d running!', cluster.worker.id);
 
 }
